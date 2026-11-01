@@ -1,0 +1,33 @@
+# Never commit a personal EFI or machine identity
+EFI/
+OC/
+BOOT/
+config.plist
+vault.plist
+*.aml
+*.efi
+*.kext/
+*.bin
+*.rom
+*.fd
+*.img
+*.dmg
+*.iso
+*.panic
+*.ips
+*.diag
+*.log
+*.zip
+*.tar
+*.tar.gz
+*.7z
+.DS_Store
+
+[continuity-reminder] Before the final user reply, classify this turn with /home/alpha/projects-memory/chat-bridge/POLICY.md. If it adds durable user facts/quotes, corrections, authorization/boundaries, decisions, execution progress, or a breakpoint, write a Chat Bridge checkpoint; if chat_checkpoint is unavailable in this cached tool schema, use the START-HERE.md inbox + chat-bridge-ingest fallback. Do not checkpoint secrets or trivial chat.
+# Credentials and signing material
+.env*
+*.pem
+*.key
+*.p12
+*.mobileconfig
+*.ipsw
