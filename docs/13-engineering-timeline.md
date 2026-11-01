@@ -2,9 +2,9 @@
 
 This is a condensed index of the major decisions. Detailed S4 evidence lives in the [S4 case study](case-studies/s4-sleep-resume.md).
 
-## 2026-09-21 — project reactivated
+## 2026-07-26 → 2026-09-21 — retirement reversed; project reactivated
 
-A previous decision to retire the Hackintosh was explicitly withdrawn. The work resumed with the goal of approaching a reliable, Mac-like daily experience rather than merely reaching the desktop.
+A previous decision to retire the Hackintosh on 2026-07-26 was explicitly withdrawn on 2026-09-21. The work resumed with the goal of approaching a reliable, Mac-like daily experience rather than merely reaching the desktop.
 
 ## 2026-09-22 — hardware and upstream audit
 

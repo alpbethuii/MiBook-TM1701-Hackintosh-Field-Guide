@@ -4,7 +4,7 @@
 >
 > 目标不是再发一份“能开机的 EFI”，而是把一台机器从能启动，逐步收敛到可解释、可复现、日常可用，并且把每一次失败、回滚和最终取舍都留下证据。
 
-[English overview](README_EN.md) · [版本选择历史](docs/12-os-version-history.md) · [完整工程时间线](docs/13-engineering-timeline.md) · [硬件适用范围](docs/01-hardware-and-compatibility.md) · [从零安装](docs/02-installation.md) · [S4 深度案例](docs/case-studies/s4-sleep-resume.md) · [失败实验索引](docs/decision-log/rejected-experiments.md)
+[English overview](README_EN.md) · [版本选择历史](docs/12-os-version-history.md) · [完整工程时间线](docs/13-engineering-timeline.md) · [资料来源与覆盖范围](docs/14-source-provenance.md) · [硬件适用范围](docs/01-hardware-and-compatibility.md) · [从零安装](docs/02-installation.md) · [S4 深度案例](docs/case-studies/s4-sleep-resume.md) · [失败实验索引](docs/decision-log/rejected-experiments.md)
 
 ## 项目状态
 
@@ -92,6 +92,9 @@ docs/
   09-wireless-bluetooth.md
   10-usb-storage-dualboot.md
   11-validation-matrix.md
+  12-os-version-history.md
+  13-engineering-timeline.md
+  14-source-provenance.md
   case-studies/s4-sleep-resume.md
   decision-log/accepted-quirks.md
   decision-log/rejected-experiments.md

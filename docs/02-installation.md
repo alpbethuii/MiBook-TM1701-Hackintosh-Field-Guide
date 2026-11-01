@@ -19,7 +19,18 @@ Read [BIOS and EC notes](03-bios-and-ec.md). The reference machine had a one-tim
 
 Do not flash a BIOS or EC image from another machine. Do not copy the custom EC fan image described in the engineering notes.
 
-## 2. Start from the correct upstream KBL release
+## 2. Firmware baseline and the settings we actually changed
+
+For the reference E07 machine, the two verified firmware changes were:
+
+- DVMT pre-allocation = 64 MB;
+- CFG Lock / MSR 0xE2 = unlocked.
+
+The project also verified that the BIOS Panel Open Wake Up option was already enabled. That option did not make deep-S4 lid-open wake work. Other menu items must be checked against the actual BIOS and the current Dortania KBL guide; this project does not invent a full BIOS menu dump.
+
+The final reference kept VT-d/AppleVTD active with a custom no-RMRR DMAR. Do not apply a generic “disable VT-d” recommendation on top of that profile without a new test. See [BIOS and EC](03-bios-and-ec.md) and [ACPI](05-acpi-design.md).
+
+## 3. Start from the correct upstream KBL release
 
 Use the upstream [daliansky/XiaoMi-Pro-Hackintosh](https://github.com/daliansky/XiaoMi-Pro-Hackintosh) project and select the **KBL / 8th-gen release** that matches the macOS target.
 
@@ -28,7 +39,7 @@ Use the upstream [daliansky/XiaoMi-Pro-Hackintosh](https://github.com/daliansky/
 - Read the release notes and inspect the config before use.
 - Use the [Dortania Kaby Lake laptop guide](https://dortania.github.io/OpenCore-Install-Guide/config-laptop.plist/kaby-lake.html) as the architecture reference, not as a substitute for model-specific validation.
 
-## 3. Build a machine-specific OpenCore config
+## 4. Build a machine-specific OpenCore config
 
 The public guide does not ship a ready-to-flash EFI. Build a config for the exact machine:
 
@@ -40,13 +51,19 @@ The public guide does not ship a ready-to-flash EFI. Build a config for the exac
 6. Rebuild Basic Vault hashes after every config or EFI content change.
 7. Check that every enabled ACPI/kext/driver file exists and that no disabled/orphaned experimental files are accidentally loaded.
 
-## 4. Prepare a USB installer
+## 5. Prepare a USB installer
 
-Use a separate USB device. Confirm the physical device by model and capacity before erasing it. Create the macOS installer using Apple's supported `createinstallmedia` workflow, then place the machine-specific OpenCore EFI on the USB EFI partition.
+On a supported Mac, obtain the full installer from Apple (do not use a repacked or modified image). After the installer application is present, the standard command is:
 
-Do not erase or repartition either internal NVMe as part of USB preparation.
+```bash
+sudo "/Applications/Install macOS Ventura.app/Contents/Resources/createinstallmedia" --volume "/Volumes/InstallUSB"
+```
 
-## 5. First boot and installation
+Replace the volume name only after confirming the USB device by physical model/capacity in Disk Utility or `diskutil list`. The command erases the selected USB volume. It must never target either internal NVMe.
+
+Do not erase or repartition either internal NVMe as part of USB preparation. Place the machine-specific OpenCore EFI on the USB EFI partition only after the installer creation has completed.
+
+## 6. First boot and installation
 
 1. Boot the USB through UEFI.
 2. Confirm the OpenCore picker identifies the installer and the rescue path.
@@ -55,7 +72,7 @@ Do not erase or repartition either internal NVMe as part of USB preparation.
 5. Keep the USB EFI available until the internal installation has been boot-tested independently.
 6. After first boot, verify that the installed system is running from the intended internal APFS volume.
 
-## 6. Post-install acceptance
+## 7. Post-install acceptance
 
 Complete the [validation matrix](11-validation-matrix.md) before treating the system as daily-use ready:
 
@@ -70,11 +87,11 @@ Complete the [validation matrix](11-validation-matrix.md) before treating the sy
 - ordinary sleep/wake;
 - battery S4 only after a separate safety-reviewed test.
 
-## 7. Do not copy the reference machine's power settings blindly
+## 8. Do not copy the reference machine's power settings blindly
 
 The final 12h/3h policy is the result of months of A/B testing on one firmware/EC combination. It is not a universal first-boot default. Start with ordinary sleep, collect a clean baseline, then evaluate S4 separately.
 
-## 8. Recovery plan
+## 9. Recovery plan
 
 Before any internal EFI write:
 

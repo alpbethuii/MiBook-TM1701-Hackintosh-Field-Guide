@@ -152,6 +152,21 @@ This proves that low-power mode 1 was **not necessary** for one successful Ventu
 
 All temporary test values were restored to the original 86400/10800/LPM0 values after each test.
 
+## Exact acceptance snapshots
+
+The maintained project logs preserve these representative cycles:
+
+| Date / phase | Sleep entry | S4 transition | Resume | Notes |
+|---|---|---|---|---|
+| 2026-09-29 short Sonoma test | 15:40:29, Battery clamshell; high=600 / low=600 / LPM1 | 15:50:31, RTC/Maintenance DarkWake → Maintenance Sleep | 15:59:06, Wake from Standby | Same boot session; WakeTime about 0.683 s |
+| 2026-09-29 second short Sonoma test | 16:26:58 | 16:37:01, Maintenance transition | 16:43:17, Wake from Standby | WakeTime about 0.710 s |
+| 2026-09-29/30 production overnight | ~20:49, Battery clamshell | ~23:49, after 3 h | 07:05:24, Wake from Standby | rd=111 ms, WakeTime=0.741 s; battery 79%→77%; no new panic |
+| 2026-10-17 production-like test | 00:44:55, Battery clamshell | 03:44:58, after 3 h | 07:23:08, Wake from Standby | WakeTime about 0.703 s; brief mosaic accepted |
+| 2026-10-25 Ventura replay, LPM1 | 20:10:47, Battery clamshell | 20:20:55, +608 s | 20:44:41, Wake from Standby | rd=140 ms, WakeTime=3.254 s; same boot session; brief mosaic |
+| 2026-10-25 Ventura replay, LPM0 | 21:31:22, Battery clamshell | 21:41:30, +608 s | 21:49:08, Wake from Standby | rd=125 ms, WakeTime=3.264 s; same boot session; mosaic flashed twice |
+
+The Sonoma production policy before the Ventura migration used a three-hour Battery S3→S4 delay (high and low both 10800 seconds), `lowpowermode=1`, and AC `standby=0`. The final Ventura policy deliberately differs: high-charge 12 hours, low-charge 3 hours, `lowpowermode=0`, AC `standby=0`. The difference reflects a later user decision about work-session continuity and normal performance, not an assumption that the two OS versions have identical power management.
+
 ## Why the final policy is 12h / 3h / LPM0
 
 The final decision was based on the actual use case, not on copying Apple's exact thresholds:
