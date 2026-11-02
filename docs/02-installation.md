@@ -1,6 +1,6 @@
 # Installation guide — reproduce the tested TM1701 baseline
 
-This chapter is a controlled installation outline, not a one-click installer. The exact reference baseline was macOS Ventura 13.7.8 / OpenCore 1.0.7 on a TM1701 i7-8550U. Re-check current Apple security support before choosing Ventura for a new daily-use machine.
+This chapter is a controlled installation outline, not a one-click installer. For the exact assembly order and sanitized reference values, also use the [reproducible build checklist](15-reproducible-build-checklist.md). The exact reference baseline was macOS Ventura 13.7.8 / OpenCore 1.0.7 on a TM1701 i7-8550U. Re-check current Apple security support before choosing Ventura for a new daily-use machine.
 
 ## 0. Confirm the target
 
@@ -89,7 +89,7 @@ Complete the [validation matrix](11-validation-matrix.md) before treating the sy
 
 ## 8. Do not copy the reference machine's power settings blindly
 
-The final 12h/3h policy is the result of months of A/B testing on one firmware/EC combination. It is not a universal first-boot default. Start with ordinary sleep, collect a clean baseline, then evaluate S4 separately.
+The final 12h/3h policy is the result of months of A/B testing on one firmware/EC combination. The exact live pmset receipt is recorded in the [S4 case study](case-studies/s4-sleep-resume.md). It is not a universal first-boot default. Start with ordinary sleep, collect a clean baseline, then evaluate S4 separately.
 
 ## 9. Recovery plan
 

@@ -17,7 +17,7 @@ It does not claim to reconstruct every historical macOS installation ever perfor
 | 2026-09-24 | EFI GOLD and display baseline | Clean OpenCore 1.0.7 baseline; HiDPI and ColorSync accepted |
 | 2026-09-25 | Wi-Fi and EC fan policy | Hidden-SSID handling improved; EC502-derived fan strategy selected |
 | 2026-09-28–30 | Automatic S3→S4 work | Battery 3-hour S4 path reached overnight acceptance; lid-open S4 wake remained unsupported |
-| 2026-10-14–17 | Display-link and long sleep observations | USB-C/DP and USB-C data paths accepted; S4 wake/display limitations documented |
+| 2026-10-14–17 | Display-link and long sleep observations | Both USB-C data ports passed 5 Gbps; DP 4K60 instability and the DynamicCDCLK experiment were documented but not accepted as the production baseline |
 | 2026-10-21–24 | OS decision and Ventura migration preparation | Ventura 13.7.8 selected; Broadcom-native Wi-Fi path chosen |
 | 2026-10-25 | Ventura installation and hardware acceptance | Ventura 13.7.8 booted; HiDPI, audio, keyboard and sleep replay validated |
 | 2026-10-25 | S4 LPM0 A/B and production power policy | LPM0 shown sufficient for one controlled S4 cycle; final 12h/3h policy selected |

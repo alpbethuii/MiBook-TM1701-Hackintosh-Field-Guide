@@ -11,8 +11,8 @@ Use this matrix after building a machine-specific EFI. The status column is the 
 | MX150 | Disabled | Not a supported macOS display path |
 | Internal BOE panel | PASS | Real EDID retained |
 | HiDPI 1424×802 | PASS | 2848×1604 backing; ColorSync Color LCD profile verified |
-| HDMI 4K30 | PASS | 4K60 was black on HDMI |
-| USB-C / DP 4K60 | PASS | Separate physical path |
+| HDMI 4K30 | PASS | Physical picture restored and accepted at 4K30 |
+| USB-C / DP 4K60 | HISTORICAL SESSION / NOT PRODUCTION-ACCEPTED | DynamicCDCLK enabled a 4K60 session, but later WindowServer watchdog and DP link instability caused rejection from the final profile; final flags are `0x00C3070B` |
 | ALC298 speakers | PASS | User physical test |
 | Headset plug/unplug | PASS | User physical test |
 | Headset microphone | PASS | User physical test |

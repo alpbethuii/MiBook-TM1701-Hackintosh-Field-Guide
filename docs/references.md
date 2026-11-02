@@ -32,7 +32,7 @@ This project is a machine-specific engineering record. The upstream documents be
 ## Apple platform and security references
 
 - [Apple — About the security content of macOS Ventura 13.7.8](https://support.apple.com/en-us/124929) — lists Ventura 13.7.8 as released on 2025-08-20.
-- [Apple security releases](https://support.apple.com/en-us/100100) — check the current supported release before choosing an OS for a new installation.
+- [Apple security releases](https://support.apple.com/en-us/100100) — checked 2026-11-02; Ventura 13.7.8 is listed at 2025-08-20, Sonoma 14.8.9 at 2026-08-06, and Sequoia 15.8.2 / Tahoe 26.7.2 at 2026-10-26. Check this page again before a new installation.
 
 ## Attribution
 

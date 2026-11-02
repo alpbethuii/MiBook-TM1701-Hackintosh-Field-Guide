@@ -20,6 +20,12 @@ This repository was reconstructed from maintained engineering records, test repo
 | S4 | 2026-09-23/24 S4 and framebuffer handoffs, 2026-09-28/30 automatic S4 evidence, 2026-10-17 S4 acceptance, 2026-10-25 Sonoma replay and Ventura LPM0 A/B |
 | Final Ventura state | 2026-10-25 hardware acceptance, 2026-11-01 production closeout and live power-policy receipt |
 
+## Historical conversation archive and older compatibility material
+
+The private MiBook macOS14 archive indexed on 2026-10-31 contains 9 main conversation threads and 8 subtask threads (two main entries were empty), alongside project workfiles and recovery evidence. The public guide uses sanitized engineering conclusions and maintained project records; it does not publish raw conversations, EFI archives or machine identity data.
+
+A user-supplied historical OpenCore reference contains High Sierra 10.13.6 and Catalina installation/tutorial material. That is **generic historical compatibility reference**, not evidence that this particular laptop's currently documented project installed or ran those OS versions. The reproducible project record in this guide begins with the 2026-09-21 reactivation. Do not infer an earlier exact first-install date or version without a primary record. The same user-supplied OpenCore guide is from the OpenCore 0.5.6 era; it was treated only as a checklist of topics. Any setting carried into the current profile was rechecked against OpenCore 1.0.7 documentation, upstream KBL material and this machine's live evidence.
+
 ## Important source corrections
 
 - A previous 2026-07-26 retirement decision was reversed on 2026-09-21. The current project is the subsequent reactivated engineering effort.
@@ -33,7 +39,17 @@ This repository was reconstructed from maintained engineering records, test repo
 
 The searchable archive preserves a detailed record from the 2026-09-21 project reactivation through the 2026-11-01 closeout. The original 2026-09-22 ChatGPT discussion was recovered as a summary rather than a complete verbatim transcript. Earlier installation work before the current archived project restart may not be fully represented.
 
+A separate targeted history search for actual pre-2026-09-21 installations returned no matching conversation evidence. The only older item recovered was the generic upstream/user-supplied README described above; it is not an installation log. Therefore the earliest actual macOS version and install date on this physical machine remain unknown.
+
 This guide therefore claims **best-effort reconstruction of the available MiBook project record**, not a complete forensic export of every historical installation or every conversation.
+
+## Adjacent MiBook projects intentionally excluded
+
+- Windows Dolby Atmos / DAX3 reverse engineering is a separate Windows audio project; it does not describe macOS ACPI, kext or OpenCore installation.
+- The native Fn HUD helper was a separate AppKit utility and was retired on 2026-11-01; it is not part of the Hackintosh driver stack.
+- R1 voice-assistant/audio routing and other homelab work are separate projects.
+
+These records may share the physical laptop, but they must not be mixed into the Hackintosh installation baseline.
 
 ## Reproducibility boundary
 

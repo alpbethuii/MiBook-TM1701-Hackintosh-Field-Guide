@@ -17,6 +17,17 @@
 | Final Wi-Fi/BT | Broadcom BCM943602CS / BCM43602 + BCM20703A1 | Native Apple stack on the final Ventura build |
 | Storage | Samsung PM961 NVMe for macOS; separate Windows NVMe | Disk numbering can change across boots |
 
+## Wireless hardware topology — an important non-obvious detail
+
+The reference machine does **not** simply have one wireless card swapped for another:
+
+- Intel Wireless-AC 8265 remains physically installed in its original WLAN slot.
+- A Broadcom BCM943602CS / BCM43602 card was added through the WLAN_LTE slot and its adapter path.
+- The Broadcom BCM20703A1 Bluetooth USB connection is routed through the WLAN_LTE USB wiring. Windows testing verified the Broadcom card, adapter, antennas and Bluetooth USB path.
+- In the final Ventura profile, native Apple Broadcom Wi-Fi/Bluetooth is used and the unused Intel RP08 WLAN device is disabled only under Darwin by SSDT-DRP08. The Intel card remains physically present and Windows is not disabled by that Darwin-only table.
+
+A user with only the original Intel AC8265 cannot copy the final Broadcom wireless profile and expect the same AirDrop/Continuity behavior. See [wireless and Bluetooth](09-wireless-bluetooth.md).
+
 ## Model families — do not mix
 
 The upstream Xiaomi-Pro project distinguishes:

@@ -16,19 +16,43 @@ The list below is reconstructed from the final Ventura config and the archived b
 | HibernationFixup | 1.5.4 | Part of the validated S4 resume path |
 | NullEthernet | 1.0.8 | Supports the RMNE/en0 identity topology |
 | VoodooI2C | 2.8 | I²C touchpad controller |
-| VoodooI2CServices | 1.1 | VoodooI2C plugin |
-| VoodooGPIO | 1.0 | GPIO support |
+| VoodooI2CServices | 1.0 | VoodooI2C service plugin |
+| VoodooGPIO | 1.1 | GPIO support |
 | VoodooInput | 1.1.7 | HID input layer |
 | VoodooI2CHID | 1.0 | HID touchpad interface |
 | VoodooPS2Controller | 2.3.8 | PS/2 keyboard/controller path |
 | VoodooPS2Keyboard | 2.3.8 | Internal keyboard |
 | USBMap | 1.0 | Precise 11-port USB map |
 
+## Exact Kernel/Add order in the archived Ventura candidate
+
+The 2026-10-25 Ventura source EFI archive contains 17 enabled Kernel/Add entries in this order (the archive is private; this list is a sanitized extraction):
+
+1. Lilu
+2. HibernationFixup
+3. VirtualSMC
+4. SMCLightSensor
+5. SMCBatteryManager
+6. SMCProcessor
+7. WhateverGreen
+8. AppleALC
+9. NullEthernet
+10. VoodooI2CServices (nested plugin)
+11. VoodooGPIO (nested plugin)
+12. VoodooI2C
+13. VoodooI2CHID
+14. VoodooPS2Controller
+15. VoodooPS2Keyboard (nested plugin)
+16. VoodooInput (nested plugin)
+17. USBMap
+
+Do not flatten nested plugins into separate top-level bundles. Preserve the bundle paths and dependency order expected by the actual kext projects.
+
 ## Wireless stack
 
 The final Ventura profile does **not** load Intel AirportItlwm/itlwm or HeliPort. The reference machine uses a Broadcom BCM943602CS card and the native Apple Wi-Fi/Bluetooth stack.
 
-The archived EFI contains an old Sonoma-specific AirportItlwm bundle, but it is not an enabled entry in the final Ventura config. Presence on disk is not proof of a loaded kext.
+The archived EFI contains an old Sonoma-specific AirportItlwm_Sonoma144 2.4.0 bundle, but it is not an enabled entry in the final Ventura config. Presence on disk is not proof of a loaded kext. The final Ventura candidate has 17 enabled Kernel/Add entries; no Intel Wi-Fi or Intel Bluetooth kext is loaded.
 
 ## Components intentionally not enabled
 
@@ -40,7 +64,6 @@ The archived EFI contains an old Sonoma-specific AirportItlwm bundle, but it is 
 | IntelBluetoothFirmware / Injector | Not used | Final Broadcom card uses native Apple Bluetooth |
 | ALCPlugFix | Not installed | Physical headphone replug and headset microphone tests passed |
 | RealtekCardReader / Friend | Not installed | SD card was not a priority; actual media read/write was not accepted |
-| NVMeFix | Not enabled | Do not add it merely because a generic guide recommends APST |
 
 ## The VoodooI2C version lesson
 

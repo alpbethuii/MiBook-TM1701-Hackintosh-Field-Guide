@@ -16,9 +16,23 @@ This is a sanitized description of the final Ventura reference configuration. It
 | `LauncherOption` | `Full` | Maintains the selected OpenCore boot chain |
 | `HibernateMode` | `Auto` | Retains OpenCore hibernation detection |
 | Vault | Basic Vault | Hash consistency checked after config updates |
+| SecureBootModel | Default | Kept; no OCLP/root-patch route in the final Ventura profile |
+| DMG loading | Signed | Only signed installer images are accepted by the configured policy |
 | SIP | Enabled | `csr-active-config=00000000` |
 
-The user physically confirmed a reboot directly entered Ventura without a picker/countdown. No routine NVRAM reset was required.
+The user physically confirmed a reboot directly entered Ventura without a picker/countdown. `PollAppleHotKeys=True` remains enabled so the picker can still be summoned deliberately. `LauncherOption=Full` is paired with `RequestBootVarRouting=True` for the Windows/OpenCore boot chain. No routine NVRAM reset was required.
+
+## UEFI drivers and boot sound
+
+Enabled UEFI drivers in the archived Ventura candidate:
+
+- `OpenRuntime.efi`
+- `HfsPlus.efi`
+- `OpenCanopy.efi`
+- `AudioDxe.efi`
+- `ResetNvramEntry.efi`
+
+`UEFI/Audio/AudioSupport=True` and `PlayChime=Auto` are configured. This is the OpenCore preboot audio path; it is separate from AppleALC/macOS audio acceptance.
 
 ## Important boot arguments
 
@@ -39,7 +53,7 @@ These are not generic defaults. In particular, the HibernationFixup arguments we
 | `Booter → Quirks → ForceBooterSignature` | True in final S4 profile | Part of the final S4-resume configuration |
 | `Booter → Quirks → FixupAppleEfiImages` | False | Single-variable A/B passed with SecureBootModel=Default |
 | `Booter → Quirks → ProtectUefiServices` | True | Live debug logs showed runtime-service recovery evidence |
-| `Booter → Quirks → DevirtualiseMmio` | True | Live logs showed a material MMIO runtime mapping being released |
+| `Booter → Quirks → DevirtualiseMmio` | True | Live logs showed a material MMIO runtime mapping being released; the retained whitelist includes the verified 0xFFA00000 range |
 | `Booter → Quirks → RebuildAppleMemoryMap` | True | Retained after real runtime validation |
 | `Booter → Quirks → SyncRuntimePermissions` | True | Retained with the validated memory-map path |
 | `Kernel → Quirks → AppleXcpmCfgLock` | False | Firmware CFG Lock was physically unlocked |
@@ -54,10 +68,31 @@ These are not generic defaults. In particular, the HibernationFixup arguments we
 - HDEF uses AppleALC layout 30.
 - Do not copy the full DeviceProperties block to a different panel or connector map.
 
+## Additional non-default quirks in the archived Ventura candidate
+
+These values are part of the exact candidate config and should be treated as a recorded baseline, not a checklist to toggle casually:
+
+- `ACPI/Quirks/ResetHwSig=True`
+- `ACPI/Quirks/NormalizeHeaders=False`
+- `Booter/Quirks/AvoidRuntimeDefrag=True`
+- `Booter/Quirks/ResizeAppleGpuBars=-1` and `UEFI/Quirks/ResizeGpuBars=-1`
+- `Kernel/Quirks/CustomSMBIOSGuid=True`
+- `Kernel/Quirks/DisableLinkeditJettison=True`
+- `Kernel/Quirks/DisableRtcChecksum=True`
+- `Kernel/Quirks/PanicNoKextDump=True`
+- `Kernel/Quirks/PowerTimeoutKernelPanic=True`
+- `Kernel/Quirks/SetApfsTrimTimeout=-1`
+- `UEFI/Quirks/EnableVectorAcceleration=True`
+- `UEFI/Quirks/RequestBootVarRouting=True`
+
+`DisableRtcChecksum=True` is retained because RTC checksum handling can otherwise reset firmware settings on this platform. Do not change it merely to make the plist resemble another laptop's sample. `PowerTimeoutKernelPanic=True` is retained for power-transition diagnostics; its presence does not mean every possible wake failure is hidden or suppressed.
+
+The candidate's final ACPI section also deletes the OEM DMAR (`TableSignature=DMAR`) before adding the custom no-RMRR table. `ResetHwSig` is an **ACPI quirk**, not a `Misc/Boot` or `Booter/Quirk` entry.
+
 ## AppleVTD / DMAR
 
 The final profile retains:
-- custom no-RMRR DMAR table;
+- OEM DMAR deletion followed by the custom no-RMRR DMAR table;
 - `DisableIoMapper=False`;
 - AppleVTD active at runtime.
 
@@ -72,4 +107,4 @@ The project did not simply disable VT-d to hide every DMA/IOMapper log. The S4 i
 
 ## Validation requirement
 
-Every change to OpenCore must use the matching version's `ocvalidate`, verify the Vault, inspect enabled-file references and preserve a complete rollback copy. A successful plist parse alone is not sufficient.
+Every change to OpenCore must use the matching version's `ocvalidate`, verify the Vault, inspect enabled-file references and preserve a complete rollback copy. A successful plist parse alone is not sufficient. The 2026-11-01 closeout archive contains the exact candidate config and Vault; the guarded install reported matching write-after-hash checks and the user accepted the direct boot. A later read-only EFI mount attempt did not mount, so the project does **not** claim an independent post-install live plist readback.

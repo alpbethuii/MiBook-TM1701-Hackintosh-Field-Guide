@@ -4,7 +4,7 @@
 >
 > 目标不是再发一份“能开机的 EFI”，而是把一台机器从能启动，逐步收敛到可解释、可复现、日常可用，并且把每一次失败、回滚和最终取舍都留下证据。
 
-[English overview](README_EN.md) · [版本选择历史](docs/12-os-version-history.md) · [完整工程时间线](docs/13-engineering-timeline.md) · [资料来源与覆盖范围](docs/14-source-provenance.md) · [硬件适用范围](docs/01-hardware-and-compatibility.md) · [从零安装](docs/02-installation.md) · [S4 深度案例](docs/case-studies/s4-sleep-resume.md) · [失败实验索引](docs/decision-log/rejected-experiments.md)
+[English overview](README_EN.md) · [版本选择历史](docs/12-os-version-history.md) · [完整工程时间线](docs/13-engineering-timeline.md) · [资料来源与覆盖范围](docs/14-source-provenance.md) · [复现施工清单](docs/15-reproducible-build-checklist.md) · [硬件适用范围](docs/01-hardware-and-compatibility.md) · [从零安装](docs/02-installation.md) · [S4 深度案例](docs/case-studies/s4-sleep-resume.md) · [失败实验索引](docs/decision-log/rejected-experiments.md)
 
 ## 项目状态
 
@@ -38,7 +38,11 @@
 5. **[Kext 清单](docs/06-kext-inventory.md)**：最终启用版本、未启用组件和失败升级。
 6. **[S4 深度案例](docs/case-studies/s4-sleep-resume.md)**：整个项目最重要的工程案例，包含 0x27 panic、DMA/IOMMU、HibernationFixup、PXSX、LID/GPE、EC A/B，以及最后的 12h/3h 折中。
 7. **[已接受的 Quirks 决策](docs/decision-log/accepted-quirks.md)**：哪些设置经过实机证明必须保留。
-8. **[失败实验总表](docs/decision-log/rejected-experiments.md)**：不再重复踩坑。
+8. **[DP 4K60 案例](docs/case-studies/external-display-dp.md)**：曾经成功、为什么不进入生产基线。
+9. **[EC 风扇策略案例](docs/case-studies/ec-fan-policy.md)**：E07、EC502、62°C 曲线和停止线。
+10. **[复现施工清单](docs/15-reproducible-build-checklist.md)**：把硬件、BIOS、ACPI、kext 和验收串成一条路线。
+11. **[故障排查索引](docs/16-troubleshooting-index.md)**：常见症状、先看什么证据、哪些方案不要重试。
+12. **[失败实验总表](docs/decision-log/rejected-experiments.md)**：不再重复踩坑。
 
 ## 最终体验边界
 
@@ -46,7 +50,7 @@
 
 - Ventura 13.7.8 正常启动；OpenCore 隐藏 Picker，普通启动直接进入默认 macOS。
 - UHD620 / Metal 3 正常；内屏真实 BOE EDID 保留，1424×802 HiDPI、Color LCD 色彩配置通过。
-- HDMI 外接 4K30 正常；USB-C / DisplayPort 4K60 有独立验收记录。不要把 HDMI 与 USB-C/DP 的带宽上限混为一谈。
+- HDMI 外接 4K30 有实机画面验收。USB-C/DP 4K60 有过一次历史成功；后来为复现 4K60 而启用 DynamicCDCLK 的候选曾引发 WindowServer watchdog / DP 链路异常，因此未保留在最终生产配置，不能承诺最终系统稳定 4K60。详见 [DP 4K60 案例](docs/case-studies/external-display-dp.md)。
 - ALC298 扬声器、耳机插拔、耳机麦克风和内置麦克风通过现场测试。
 - I²C 触控板、PS/2 键盘和功能键按键映射通过实机验收。
 - Broadcom 原生 Wi-Fi / Bluetooth 工作，AirDrop 文件互传通过。
@@ -95,7 +99,11 @@ docs/
   12-os-version-history.md
   13-engineering-timeline.md
   14-source-provenance.md
+  15-reproducible-build-checklist.md
+  16-troubleshooting-index.md
   case-studies/s4-sleep-resume.md
+  case-studies/external-display-dp.md
+  case-studies/ec-fan-policy.md
   decision-log/accepted-quirks.md
   decision-log/rejected-experiments.md
   references.md

@@ -2,6 +2,17 @@
 
 The OS choice changed more than once. The important lesson is to preserve the reasoning at the time rather than rewriting history as if the final choice had always been obvious.
 
+## Current Apple security snapshot (checked 2026-11-02)
+
+This section is a current-security warning, not a rewrite of the historical OS decision:
+
+- Ventura 13.7.8 is still the reference build, but Apple's security page lists it as released **2025-08-20**; no later Ventura security release appears in the current list.
+- Sonoma 14.8.9 is listed as released **2026-08-06**.
+- Sequoia 15.8.2 and Tahoe 26.7.2 are listed as released **2026-10-26**.
+- macOS Golden Gate 27.2 is also listed, but Apple's compatibility list limits it to Apple-silicon Macs; it is not a viable OS target for this Intel TM1701.
+
+Therefore Ventura 13.7.8 remains the **historically tested reference**, not the safest current OS recommendation for a new internet-connected install. A newer Intel-compatible OS would require its own KBL EFI, wireless, audio, display and sleep acceptance. Source: [Apple Security Releases](https://support.apple.com/en-us/100100).
+
 ## Decision timeline
 
 | Date | Candidate / decision | Reasoning |
@@ -22,6 +33,8 @@ Sonoma 14.8.9 had important advantages:
 - It had a newer security baseline than Ventura 13.7.8 in late 2026.
 
 But the tested Intel Wi-Fi/HeliPort path did not expose the expected AWDL continuity path. The alternative Sonoma Broadcom route required OCLP root patching, with SIP/security-policy and update-maintenance costs. OCLP does not officially support Hackintosh root patching.
+
+The September 22 Broadcom-only EFI was an early candidate staged for external testing, not a completed full Continuity acceptance. The later 2026-10-25 Ventura installation supplied the stronger final evidence: native Broadcom Wi-Fi/Bluetooth were active and the user completed a real AirDrop file transfer. That does not imply every Continuity feature was tested.
 
 ## Why Ventura was selected in the end
 

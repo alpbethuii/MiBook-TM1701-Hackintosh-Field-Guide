@@ -4,7 +4,7 @@ An evidence-driven engineering notebook for the Xiaomi Mi Notebook Pro 15.6-inch
 
 This repository documents the path from a booting Hackintosh to a carefully validated daily-use setup: BIOS/firmware, OpenCore, ACPI/SSDT, kexts, graphics, audio, Wi-Fi/Bluetooth, USB mapping, sleep, hibernation and failed experiments.
 
-The reference machine is an i7-8550U / UHD 620 / 8 GB TM1701 running a frozen, tested **macOS Ventura 13.7.8** baseline with OpenCore 1.0.7. The final wireless setup uses a Broadcom BCM943602CS card with native Apple Wi-Fi/Bluetooth support.
+The reference machine is an i7-8550U / UHD 620 / 8 GB TM1701 running a frozen, tested **macOS Ventura 13.7.8** baseline with OpenCore 1.0.7. The final wireless setup uses an added Broadcom BCM943602CS card with native Apple Wi-Fi/Bluetooth support; the original Intel AC8265 remains physically installed but is disabled in the macOS path. The final display profile keeps DynamicCDCLK disabled: HDMI 4K30 was physically accepted, while DP 4K60 remains a historical experiment rather than a production guarantee.
 
 ## Start here
 
@@ -15,6 +15,10 @@ The reference machine is an i7-8550U / UHD 620 / 8 GB TM1701 running a frozen, t
 - [ACPI design](docs/05-acpi-design.md)
 - [Kext inventory](docs/06-kext-inventory.md)
 - [S4 sleep/hibernation case study](docs/case-studies/s4-sleep-resume.md)
+- [External DP / 4K60 case study](docs/case-studies/external-display-dp.md)
+- [EC fan policy case study](docs/case-studies/ec-fan-policy.md)
+- [Reproducible build checklist](docs/15-reproducible-build-checklist.md)
+- [Troubleshooting index](docs/16-troubleshooting-index.md)
 - [Rejected experiments](docs/decision-log/rejected-experiments.md)
 
 ## What this repository is — and is not

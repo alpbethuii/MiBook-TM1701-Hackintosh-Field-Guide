@@ -69,7 +69,7 @@ A previous decision to retire the Hackintosh on 2026-07-26 was explicitly withdr
 - Installed Ventura 13.7.8.
 - Re-established internal 1424×802 HiDPI and ColorSync.
 - Accepted audio, headset microphone, touchpad, keyboard and F-key behavior.
-- HDMI 4K30 restored external picture; 4K60 was separately validated over USB-C/DP.
+- HDMI 4K30 restored external picture. DP 4K60 remained a historical/experimental path and was not accepted in the final production profile; see the dedicated case study.
 - Replayed Sonoma S4 conditions on Ventura and completed a matched LPM0 A/B.
 - Chose Battery high-charge 12h / low-charge 3h / LPM0, with AC S3-only.
 

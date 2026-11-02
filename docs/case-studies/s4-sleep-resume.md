@@ -18,7 +18,7 @@ The final policy is:
 
 When deep S4 has been entered, opening the lid alone does not wake the machine. A short power-button press triggers firmware/OpenCore and resumes the original macOS session. A brief upper-black/lower-mosaic flash has been observed on some resumes; it was accepted as a known imperfection when it clears immediately and the session resumes without panic.
 
-The long 12-hour high-charge delay is intentional: frequent S4 entry saves little extra energy compared with preserving a fast S3 resume for normal daily work. The user explicitly preferred continuity of open projects over marginal battery savings.
+The `highstandbythreshold=50` setting selects the high-delay path above the 50% battery threshold and the low-delay path at/below it. The long 12-hour high-charge delay is intentional: frequent S4 entry saves little extra energy compared with preserving a fast S3 resume for normal daily work. The user explicitly preferred continuity of open projects over marginal battery savings.
 
 ## What counts as a real S4 pass?
 
@@ -167,6 +167,12 @@ The maintained project logs preserve these representative cycles:
 
 The Sonoma production policy before the Ventura migration used a three-hour Battery S3→S4 delay (high and low both 10800 seconds), `lowpowermode=1`, and AC `standby=0`. The final Ventura policy deliberately differs: high-charge 12 hours, low-charge 3 hours, `lowpowermode=0`, AC `standby=0`. The difference reflects a later user decision about work-session continuity and normal performance, not an assumption that the two OS versions have identical power management.
 
+## Bluetooth wake faults were tracked separately
+
+The 2026-09-29 deep audit found seven historical bluetoothd crash reports across several different signatures: some were `dispatch_block_cancel` faults, others were CoreBluetooth queue application faults, and one was a main-thread segmentation fault. A separate HIDProfile `prepareForSleep` transition timed out during maintenance sleep. These reports were not proven to share one cause and were not evidence that Bluetooth caused the 0x27 IONVMe/IODMA/IOMapper panic or the framebuffer mosaic.
+
+A later Sonoma battery S4 test with Bluetooth enabled passed the actual Standby transition and same-session resume, although a transient bluetoothd resource spike was separately observed. The final Ventura profile uses the Broadcom native stack and passed an actual AirDrop file transfer; long-term reconnect behavior for every third-party Bluetooth peripheral was not individually accepted. Do not merge Bluetooth daemon faults, S4 entry/resume and display recovery into one root-cause claim.
+
 ## Why the final policy is 12h / 3h / LPM0
 
 The final decision was based on the actual use case, not on copying Apple's exact thresholds:
@@ -198,7 +204,7 @@ This is a user-specific, evidence-backed compromise for the reference machine, n
 ## Final production profile
 
 ```text
-Battery:
+Battery (2026-11-01 live receipt):
   hibernatemode       3
   standby             1
   standbydelayhigh    43200
@@ -207,13 +213,18 @@ Battery:
   lowpowermode        0
   powernap            0
   proximitywake       0
+  sleep               1
 
-AC:
+AC (2026-11-01 live receipt):
   hibernatemode       3
   standby             0
+  standbydelayhigh    86400
+  standbydelaylow     10800
   lowpowermode        0
   powernap            1
+  proximitywake       1
+  sleep               0
 ```
 
-Other battery values such as powernap/proximitywake are kept as documented in the machine's current-state record; do not copy them without checking the exact OS and firmware profile.
+The full pmset receipt also includes display sleep, network, TCP keepalive, disk sleep and other platform values; this excerpt lists the power-management fields most relevant to S3→S4. Do not copy the profile without checking the target OS and firmware.
 

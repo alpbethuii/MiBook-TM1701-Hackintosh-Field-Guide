@@ -6,9 +6,9 @@ The final Ventura reference profile is machine-specific. Each table below has a 
 
 | Table | Purpose in this machine | Why retained |
 |---|---|---|
-| `SSDT-ALS0.aml` | Compatibility light-sensor device | Used with SMCLightSensor; retained in the tested display/backlight path |
-| `SSDT-DDGPU.aml` | Calls the OEM dGPU power-off method | MX150 is not the macOS display GPU; table targets the unsupported discrete GPU |
-| `SSDT-EC-USBX.aml` | EC and USB power compatibility layer | Required compatibility layer for this KBL laptop |
+| `SSDT-ALS0.aml` | Synthetic ALS compatibility device | The table exposes a fixed 300-lux illuminance value; it is not a physical ambient-light sensor and cannot provide genuine automatic brightness data |
+| `SSDT-DDGPU.aml` | Calls the OEM dGPU power-off method | The `_OFF` call is Darwin-gated; MX150 is excluded from the macOS display path while Windows behavior is preserved. Direct hardware power draw was not independently measured, so do not claim a quantified dGPU power saving |
+| `SSDT-EC-USBX.aml` | Synthetic EC and USBX power properties | Compatibility layer only; it does not replace or modify the physical EC firmware |
 | `SSDT-GPRW.aml` | Corrects wake behavior around GPRW | Paired with GPRW→XPRW ACPI patch |
 | `SSDT-LGPA.aml` | MiBook brightness/function-key event logic | Paired with LGPA→XGPA patch |
 | `SSDT-PLUG.aml` | XCPM CPU plugin-type injection | Live PR00 plugin-type was verified |
@@ -16,7 +16,7 @@ The final Ventura reference profile is machine-specific. Each table below has a 
 | `SSDT-PS2K.aml` | Internal keyboard integration | Works with VoodooPS2 and MiBook key event handling |
 | `SSDT-RMNE.aml` | Built-in Ethernet identity anchor | Preserves en0 identity for the iServices/network topology |
 | `SSDT-TPD0.aml` | Darwin-specific I²C/GPIO touchpad path | Required for the tested ETD2303 touchpad chain |
-| `SSDT-DRP08.aml` | Disables the RP08 Intel WLAN device | Added for the Ventura Broadcom-native wireless configuration |
+| `SSDT-DRP08.aml` | Disables the RP08 Intel WLAN device | Darwin-only; added for the Ventura Broadcom-native wireless configuration while the Intel card remains physically present |
 | `DMAR.aml` | Custom no-RMRR DMAR table | Allows AppleVTD to remain enabled in the tested profile |
 
 ## ACPI patches
@@ -42,9 +42,11 @@ The removals were not based on aesthetic cleanup alone: each was tested independ
 
 The project used the live OEM DSDT as the reference namespace and added narrow SSDTs. It deliberately avoided replacing the complete DSDT. This limits the patch surface and makes firmware updates easier to audit.
 
-## AppleVTD and DMAR lesson
+## AppleVTD and DMAR construction
 
-A log mentioning IOMapper is not enough to conclude that AppleVTD must be disabled. Early S4 failures involved IODMACommand / dmaMap / IOMapper paths, but the investigation included both AppleVTD-off and AppleVTD-on candidates. The final accepted profile retained AppleVTD with a custom no-RMRR DMAR.
+The OEM E07 DMAR was 168 bytes and contained two DRHD remapping structures plus two RMRR reserved-memory regions. The custom table preserved the two DRHD structures byte-for-byte, removed both RMRR structures, and recalculated table length/checksum. The resulting table is 104 bytes and has a valid ACPI checksum. OpenCore deletes the OEM DMAR before adding the custom table.
+
+A log mentioning IOMapper is not enough to conclude that AppleVTD must be disabled. Early S4 failures involved IODMACommand / dmaMap / IOMapper paths, but the investigation included both AppleVTD-off and AppleVTD-on candidates. The final accepted profile retained AppleVTD with a custom no-RMRR DMAR and `DisableIoMapper=False`.
 
 ## Important warning
 
